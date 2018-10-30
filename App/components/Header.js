@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { 
   Header, 
-  Left, 
+  Left,
+  Right, 
   Body, 
   Title, 
-  Button, 
-  Icon } from "native-base";
-import { StyleSheet, View } from "react-native";
+  Icon 
+} from "native-base";
+import IconBadge from 'react-native-icon-badge';
 import Drawer from 'react-native-drawer';
 import SideBar from './SideBar';
 
@@ -35,8 +37,12 @@ class HeaderContainer extends Component {
     this.props.history.push('/');
   }
 
+  goToCart() {
+    this.props.history.push('/cart');
+  }
+
   render() {
-    const { isProduct } = this.props;
+    const { isProduct, badgeCount, isCart } = this.props;
     return (
         // {/* <Drawer
         //   ref={(ref) => this._drawer = ref}
@@ -48,35 +54,72 @@ class HeaderContainer extends Component {
         // >
          
         // </Drawer> */}
-         <Header
-            transparent
-            noShadow
-            androidStatusBarColor="#4f6d7a"
-            style={
-              !isProduct ? { backgroundColor: "#222f3e" } : 
-              { backgroundColor: "transparent", elevation:0}}
+        <Header
+          transparent
+          androidStatusBarColor="#4f6d7a"
+          style={
+            !isProduct ? { backgroundColor: "#222f3e" } : 
+            { backgroundColor: "transparent", elevation:0}}
+          >
+          <Left>
+            <TouchableOpacity 
+              transparent
             >
-            <Left>
-              <Button 
-                transparent
-                onPress={() => this.openDrawer()}
-              >
-                {!isProduct ?
-                  <Icon type="Feather" name='menu' /> :
-                  <Icon
-                    transparent 
-                    type="MaterialIcons" 
-                    name='arrow-back' 
-                    style={{color: "#222f3e"}} 
-                    onPress={() => this.goToHome()}
+              {!isProduct ?
+                <Icon type="Feather" name='menu' style={{color: "#fff"}}  onPress={() => this.openDrawer()} /> :
+                <Icon
+                  transparent 
+                  type="MaterialIcons" 
+                  name='arrow-back' 
+                  style={{color: "#222f3e"}} 
+                  onPress={() => this.goToHome()}
+                />
+              }
+            </TouchableOpacity>
+          </Left>
+          <Body>
+            <Title style={[styles.title, {color: !isProduct ? "#fff" : "#222f3e"}]}>{this.props.title}</Title>
+          </Body>
+          <Right>
+            {!isCart && 
+              <View style={{marginBottom: 10}}>
+                <TouchableOpacity>
+                  <IconBadge
+                    MainElement={
+                      <Icon 
+                        type="MaterialIcons" 
+                        name='add-shopping-cart' 
+                        style={{color: isProduct ? "#222f3e" : "#fff", paddingTop: 20}} 
+                        onPress={() => this.goToCart()}
+                        />
+                    }
+                    BadgeElement={
+                      <Text style={
+                        {
+                          color:'#FFFFFF', 
+                          textAlign: "center", 
+                          bottom: 1
+                        }
+                      }
+                      >
+                        {badgeCount ? badgeCount : 0}
+                      </Text>
+                    }
+                    IconBadgeStyle={
+                      {
+                        width: 10,
+                        height:20,
+                        backgroundColor: 'red',
+                        left: 15,
+                        top: 5
+                      }
+                    }
                   />
-                }
-              </Button>
-            </Left>
-            <Body>
-              <Title style={styles.title}>{!isProduct ? this.props.title: ""}</Title>
-            </Body>
-          </Header>
+                </TouchableOpacity>
+            </View>
+            }
+          </Right>
+        </Header>
     );
   }
 }

@@ -9,21 +9,11 @@ import {
   Image,
   FlatList,
   Dimensions,
-  ActivityIndicator
+  ActivityIndicator,
+  AsyncStorage
 } from "react-native";
-import { H1 } from "native-base";
 import HeaderContainer from '../../components/Header';
-import { Container, 
-  Content, 
-  Button, 
-  Footer, 
-  List, 
-  ListItem, 
-  Thumbnail, 
-  Left, 
-  Body, 
-  Right 
-} from 'native-base';
+import { Footer } from 'native-base';
 
 import productData from '../Data/productData';
 import newProductData from '../Data/newProducts';
@@ -38,8 +28,16 @@ class Home extends Component {
     this.state = {
       refreshing: false,
       animating: false,
-      products: productData
+      products: productData,
+      badgeCount: 0
     }
+  }
+
+  componentDidMount = async () => {
+    const products = JSON.parse(await AsyncStorage.getItem('products')) || [];
+    this.setState({
+      badgeCount: products.length
+    })
   }
 
   nextPage() {
@@ -71,7 +69,7 @@ class Home extends Component {
     this.setState({animating: true},() => {
       setTimeout(() => {
         this.setState({products: this.state.products.concat(newProductData), animating: false})
-      }, 2000)
+      }, 1000)
     });
   }
 
@@ -84,32 +82,34 @@ class Home extends Component {
   _keyExtractor = (item, index) => index;
 
   _renderItem = ({item}) => (
-      <TouchableOpacity
-        key={item.name}
-        style={styles.productContainer}
-        onPress = {() => this.handleProductView(item)}
-      >
-        <Image
-          style={[styles.productImage, objectFit="cover"]}
-          source={{uri: `${item.uri}`}}
-        />
-        <Text name style={styles.productName}>{item.name}</Text>
-        <Text>{item.cost}</Text>
-        <Text style={styles.productDesc}>{item.desc}</Text>
-      </TouchableOpacity>
+    <TouchableOpacity
+      key={item.name}
+      style={styles.productContainer}
+      onPress = {() => this.handleProductView(item)}
+      activeOpacity = {0.7}
+    >
+      <Image
+        style={[styles.productImage, objectFit="cover"]}
+        source={{uri: `${item.uri}`}}
+      />
+      <Text name style={styles.productName}>{item.name}</Text>
+      <Text>{item.cost}</Text>
+      <Text style={styles.productDesc}>{item.desc}</Text>
+      <Text>{this.state.item}</Text>
+    </TouchableOpacity>
   )
   
   render() {
     console.log(this.state)
-    const { products, refreshing, animating } = this.state;
+    const { products, refreshing, animating, badgeCount } = this.state;
     return(
       <View style={styles.container}>
-        <HeaderContainer title="Home" {...this.props}/>
+        <HeaderContainer title="Home" {...this.props} badgeCount={badgeCount}/>
         <ActivityIndicator 
           size="large" 
-          color="red" 
-          style={styles.activityIndicator} 
-          animating={this.state.animating}
+          color="#222f3e" 
+          style={[styles.activityIndicator, { opacity: animating ? 1.0 : 0.0 }]} 
+          animating={true}
         />
         <ScrollView
           contentContainerStyle={{
@@ -124,30 +124,30 @@ class Home extends Component {
               this._onScroll();
             }
           }}
-          scrollEventThrottle={2000}
+          scrollEventThrottle={400}
         >
-            <FlatList
-              style={{ height: '100%', flexDirection: "column", flexWrap: "wrap", alignContent: "space-around"}}
-              data={products}
-              initialNumToRender={15}
-              renderItem={(item) => this._renderItem(item)}
-              keyExtractor={this._keyExtractor}
-              refreshControl={
-                <RefreshControl
-                    colors={["#9Bd35A", "#689F38"]}
-                    refreshing={refreshing}
-                    onRefresh={this._onRefresh.bind(this)}
-                    title="loading.."
-                />
-              }
-              numColumns={2}
-              refreshing={refreshing}
-              extraData={products}
-            />
-          </ScrollView>
-          <Footer style={styles.footer}>
-            <Text style={{color: "#fff"}}>Footer</Text>
-          </Footer>
+          <FlatList
+            style={{ height: '100%', flexDirection: "column", flexWrap: "wrap", alignContent: "space-around"}}
+            data={products}
+            initialNumToRender={15}
+            renderItem={(item) => this._renderItem(item)}
+            keyExtractor={this._keyExtractor}
+            refreshControl={
+              <RefreshControl
+                  colors={["#9Bd35A", "#689F38"]}
+                  refreshing={refreshing}
+                  onRefresh={this._onRefresh.bind(this)}
+                  title="loading.."
+              />
+            }
+            numColumns={2}
+            refreshing={refreshing}
+            extraData={products}
+          />
+        </ScrollView>
+        <Footer style={styles.footer}>
+          <Text style={{color: "#fff"}}>Footer</Text>
+        </Footer>
       </View>
     )
   }

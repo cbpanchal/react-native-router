@@ -7,8 +7,7 @@ import Login from './containers/Login/Login';
 import Signup from './containers/Login/SignUp';
 import AboutUs from './containers/About-us/AboutUs';
 import Product from './containers/Product/Product';
-
-type Props = {};
+import Cart from './containers/Cart/Cart';
 
 export default class AppNavigator extends Component {
   render() {
@@ -20,6 +19,7 @@ export default class AppNavigator extends Component {
           <Route  path="/login" component={Login} />
           <Route  path="/signup" component={Signup} />
           <Route  path="/product" component={Product} />
+          <Route  path="/cart" component={Cart} />
         </View>
       </NativeRouter>
     );
