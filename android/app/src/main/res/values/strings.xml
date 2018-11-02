@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">test</string>
+    <string name="fb_app_id">575421376222874</string>
+    <string name="fb_login_protocol_scheme">fb575421376222874</string>
 </resources>

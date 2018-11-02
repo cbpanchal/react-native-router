@@ -11,17 +11,29 @@ import {
 import { View, StyleSheet, AsyncStorage } from 'react-native'
 import HeaderContainer from '../../components/Header';
 import validateEmail from '../Validator/Validator';
+import FBLoginContainer from '../../containers/Login/FBLoginContainer';
+import GoogleSigninContainer from '../../containers/Login/GoogleSigninContainer';
 
 export default class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
       email: "",
-      password: ""
+      password: "",
+      badgeCount: 0,
+      passLogin: false
     }
     this.handleSignUp = this.handleSignUp.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
     this._retrieveData = this._retrieveData.bind(this);
+    this.onLoginHandle = this.onLoginHandle.bind(this);
+  }
+
+  componentDidMount = async () => {
+    const products = JSON.parse(await AsyncStorage.getItem('products')) || [];
+    this.setState({
+      badgeCount: products.length
+    })
   }
 
   handleSignUp() {
@@ -56,11 +68,23 @@ export default class Login extends Component {
     this._retrieveData();
   }
 
+  onLoginHandle() { 
+    this.setState({
+      passLogin: true
+    })
+  }
+
   render() {
+    const { badgeCount, passLogin } = this.state;
     return (
       <View style={{height: '100%', width: '100%'}}>
         <Container>
-          <HeaderContainer title="Login" {...this.props}/>
+          <HeaderContainer 
+            title="Login" 
+            {...this.props} 
+            badgeCount={badgeCount} 
+            passLogin={passLogin}
+          />
           <Content padder>
             <Form>
               <Item>
@@ -91,6 +115,12 @@ export default class Login extends Component {
               >
                 <Text>Sign up</Text>
               </Button>
+              <View style={{paddingTop: 20, flex: 1}}>
+                <GoogleSigninContainer {...this.props}/>
+              </View>
+              <View style={{paddingTop: 20, flex: 1}}>
+                <FBLoginContainer {...this.props} onLoginHandle={this.onLoginHandle}/>
+              </View>
             </Form>
           </Content>
         </Container>

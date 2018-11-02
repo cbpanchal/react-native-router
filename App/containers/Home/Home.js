@@ -14,9 +14,11 @@ import {
 } from "react-native";
 import HeaderContainer from '../../components/Header';
 import { Footer } from 'native-base';
+import Carousel, { ParallaxImage } from 'react-native-snap-carousel';
 
 import productData from '../Data/productData';
 import newProductData from '../Data/newProducts';
+import sliderProducts from '../Data/sliderProducts';
 
 let deviceWidth = Dimensions.get("window").width;
 let deviceHeight = Dimensions.get("window").height;
@@ -25,11 +27,18 @@ class Home extends Component {
 
   constructor(props) {
     super(props);
+    const isLocationState = this.props.location.state;
+    const user = isLocationState ? this.props.location.state.user : {};
+    const isLoggedIn = isLocationState ? this.props.location.state.isLoggedIn : false;
+    console.log("Props from FB>>>>>>", this.props)
     this.state = {
       refreshing: false,
       animating: false,
       products: productData,
-      badgeCount: 0
+      badgeCount: 0,
+      data: sliderProducts,
+      currentUser: user,
+      isLoggedIn: isLoggedIn
     }
   }
 
@@ -49,7 +58,6 @@ class Home extends Component {
     //this.props.history.push('/product');
     this.props.history.push({
       pathname: '/product',
-      query: {name: product.name},
       state: {name: product.name}
     })
   }
@@ -79,7 +87,7 @@ class Home extends Component {
       contentSize.height - paddingToBottom;
   };
 
-  _keyExtractor = (item, index) => index;
+  _keyExtractor = (item, index) => index.toString();
 
   _renderItem = ({item}) => (
     <TouchableOpacity
@@ -98,13 +106,38 @@ class Home extends Component {
       <Text>{this.state.item}</Text>
     </TouchableOpacity>
   )
-  
+    
+  _renderSlider ({item, index}, parallaxProps) {
+    const { thumbnail, title } = item;
+    return (
+      <View style={{flex: 1, justifyContent: "center", margin: 10}}>
+        <ParallaxImage
+          source={{uri: thumbnail}}
+          containerStyle={styles.imageContainer}
+          style={styles.image}
+          parallaxFactor={0}
+          {...parallaxProps}
+        />
+        <Text 
+          style={{textAlign: "center", paddingTop: 5, color: "#222f3e"}} 
+          numberOfLines={2}>
+          { title }
+        </Text>
+      </View>
+    );
+  }
+
   render() {
     console.log(this.state)
-    const { products, refreshing, animating, badgeCount } = this.state;
+    const { products, refreshing, animating, badgeCount, currentUser, isLoggedIn } = this.state;
     return(
       <View style={styles.container}>
-        <HeaderContainer title="Home" {...this.props} badgeCount={badgeCount}/>
+        <HeaderContainer 
+          title="Home" {...this.props} 
+          badgeCount={badgeCount} 
+          currentUser={currentUser}
+          isLoggedIn={isLoggedIn}
+        />
         <ActivityIndicator 
           size="large" 
           color="#222f3e" 
@@ -126,6 +159,17 @@ class Home extends Component {
           }}
           scrollEventThrottle={400}
         >
+          <Carousel
+            data={this.state.data}
+            renderItem={this._renderSlider}
+            hasParallaxImages={true}
+            sliderWidth={deviceWidth}
+            itemWidth={deviceWidth}
+            itemHeight={500}
+            autoplay= {true}
+            autoplayInterval ={5000}
+            loop={true}
+          />
           <FlatList
             style={{ height: '100%', flexDirection: "column", flexWrap: "wrap", alignContent: "space-around"}}
             data={products}
@@ -159,34 +203,42 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%'
   },
-   productContainer: {
+  productContainer: {
     flexDirection: "column",
     justifyContent: "center",
     width: deviceWidth/2,
     padding: 10
-   },
-   productImage: {
-     width: '100%',
-     height: 200,
-     padding: 10,
-   },
-   productName: {
-     marginTop: 10
-   },
-   productDesc: {
-     marginTop: 5
-   },
-   footer: {
+  },
+  productImage: {
+    width: '100%',
+    height: 200,
+    padding: 10,
+  },
+  productName: {
+    marginTop: 10
+  },
+  productDesc: {
+    marginTop: 5
+  },
+  footer: {
     backgroundColor: "#222f3e", 
     justifyContent:"center", 
     alignItems:"center"
-   },
-   activityIndicator: {
+  },
+  activityIndicator: {
     position: "absolute", 
     bottom: 100,
     right: 0,
     left: 0,
     zIndex: 10000
-   }
+  },
+  imageContainer: {
+    width: "100%",
+    height: 300,
+  },
+  image: {
+    ...StyleSheet.absoluteFillObject,
+    resizeMode: "stretch"
+  }
 });
 export default Home;

@@ -18,7 +18,7 @@ export default class AppNavigator extends Component {
           <Route  path="/aboutus" component={AboutUs} />
           <Route  path="/login" component={Login} />
           <Route  path="/signup" component={Signup} />
-          <Route  path="/product" component={Product} />
+          <Route  path="/product" component={Product}/>
           <Route  path="/cart" component={Cart} />
         </View>
       </NativeRouter>

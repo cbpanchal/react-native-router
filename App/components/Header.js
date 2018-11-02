@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, AsyncStorage } from "react-native";
 import { 
   Header, 
   Left,
@@ -17,10 +17,34 @@ class HeaderContainer extends Component {
   constructor(props) {
     super(props);
     this.state =  {
-      isDrawerToggle: false
+      isDrawerToggle: false,
+      isLoggedIn: false,
+      currentUser: {}
     }
     this.openDrawer = this.openDrawer.bind(this);
     this.closeDrawer = this.closeDrawer.bind(this);
+  }
+
+  componentDidMount = async() => {
+    console.log("Header componentDidMount called.....")
+    this.setUser();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { passLogin } = nextProps;
+    if(passLogin) {
+      this.setUser();
+    }
+  }
+
+  setUser = async() => {
+    const isLoggedIn = JSON.parse(await AsyncStorage.getItem('isLoggedIn')) || false;
+    const currentUser = JSON.parse(await AsyncStorage.getItem('currentUser')) || {};
+    console.log({isLoggedIn});
+    this.setState({
+      isLoggedIn,
+      currentUser
+    });
   }
 
   closeDrawer = () => {
@@ -41,8 +65,13 @@ class HeaderContainer extends Component {
     this.props.history.push('/cart');
   }
 
+  goToLogin() {
+    this.props.history.push('/login');
+  }
+
   render() {
     const { isProduct, badgeCount, isCart } = this.props;
+    const { isLoggedIn, currentUser } = this.state;
     return (
         // {/* <Drawer
         //   ref={(ref) => this._drawer = ref}
@@ -81,6 +110,26 @@ class HeaderContainer extends Component {
             <Title style={[styles.title, {color: !isProduct ? "#fff" : "#222f3e"}]}>{this.props.title}</Title>
           </Body>
           <Right>
+            <View >
+              {isLoggedIn && 
+                <Text 
+                  style={!isCart ? {color: "#fff", paddingBottom: 18, paddingRight: 10} :
+                  {color: "#222f3e", paddingRight: 10, paddingBottom: 5}}
+                >
+                  {currentUser.profile.first_name}
+                </Text>
+              }
+            </View>
+            <TouchableOpacity 
+              transparent
+              style={isCart ? {} : {bottom: 13, paddingRight: 10}}
+            >
+              <Icon type="MaterialCommunityIcons" 
+                name='login' 
+                style={!isCart ? {color: "#fff"} : {color: "#222f3e"}}  
+                onPress={() => this.goToLogin()} 
+              /> 
+            </TouchableOpacity>
             {!isCart && 
               <View style={{marginBottom: 10}}>
                 <TouchableOpacity>

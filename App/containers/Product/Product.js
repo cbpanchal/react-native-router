@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import { 
-  Text, 
   View, 
   Image, 
   StyleSheet, 
@@ -12,7 +11,8 @@ import {
 } from 'react-native';
 import { 
   Container, 
-  Content
+  Content,
+  Text
 } from 'native-base';
 
 import HeaderContainer from '../../components/Header';
@@ -22,12 +22,12 @@ import productData from '../Data/productData';
 
 let deviceWidth = Dimensions.get("window").width;
 let deviceHeight = Dimensions.get("window").height;
-let quantity = 1;
 
 export default class Product extends Component {
   constructor(props) {
     super(props);
-    const productName = this.props.history.entries[1].query.name;
+    console.log(this.props)
+    const productName = this.props.location.state.name || '';
     this.state = {
       product: productData.filter(data => data.name === productName)[0],
       item: '',

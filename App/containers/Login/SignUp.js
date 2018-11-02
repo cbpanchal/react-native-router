@@ -12,6 +12,7 @@ import {
 import { View, AsyncStorage } from 'react-native'
 import HeaderContainer from '../../components/Header';
 import validateEmail from '../Validator/Validator';
+import FBLoginContainer from '../../containers/Login/FBLoginContainer';
 
 export default class SignUp extends Component {
   constructor(props) {
@@ -118,6 +119,9 @@ export default class SignUp extends Component {
               >
                 <Text>Login</Text>
               </Button>
+              <View style={{paddingTop: 20}}>
+                <FBLoginContainer {...this.props}/>
+              </View>
             </Form>
           </Content>
         </Container>
