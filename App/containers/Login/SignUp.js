@@ -18,6 +18,7 @@ export default class SignUp extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      name: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -34,12 +35,15 @@ export default class SignUp extends Component {
 
   handleRegister() {
     console.log(this.state);
-    const { email, password, confirmPassword } = this.state;
+    const { email, password, confirmPassword, name } = this.state;
     const user = {
       userId: new Date().getTime(),
       email,
       password,
-      confirmPassword
+      confirmPassword,
+      profile: {
+        first_name: name
+      }
     }
     if(!validateEmail(email)) {
       alert("Email is not valid OR empty!!");
@@ -70,7 +74,7 @@ export default class SignUp extends Component {
       await AsyncStorage.setItem('userList', JSON.stringify(userList))
         .then(res => {
           this.props.history.push("/login");
-          console.log(res);
+          console.log({userList});
         })
         .catch(error => {
           console.log(error);
@@ -84,6 +88,12 @@ export default class SignUp extends Component {
           <HeaderContainer title="SignUp" {...this.props}/>
           <Content padder>
             <Form>
+              <Item>
+                <Input 
+                  placeholder="Name"
+                  onChangeText={(name) => { this.setState({ name });}}
+                />
+              </Item>
               <Item>
                 <Input 
                   placeholder="Email"

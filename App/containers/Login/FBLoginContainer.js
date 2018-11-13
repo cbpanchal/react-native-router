@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
-import { Text, View, AsyncStorage } from 'react-native'
+import { View, AsyncStorage } from 'react-native'
 import { FBLogin, FBLoginManager } from 'react-native-facebook-login';
+import { connect } from 'react-redux';
+import { login, logout } from '../../redux/actions/loginAction';
+import { addItemToCart } from '../../redux/actions/productAction';
 
-export default class FBLoginContainer extends Component {
+class FBLoginContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -10,13 +13,37 @@ export default class FBLoginContainer extends Component {
     }
   }
 
-  onLoginHandle() {
-    this.props.onLoginHandle();
+  static getDerivedStateFromProps(nextProps, prevState) {
+    console.log('nextProps', nextProps);
+    this.props = nextProps
+  }
+
+  loginHandle(data) {
+    console.log('this.props', this.props)
+    this.setState({ state: this.state });
+    this.forceUpdate();
+    const { login,isAddItemToCart, product, addItemToCart  } = this.props;
+    login(data)
+      .then(res => {
+        console.log('hiiii', this.props)
+        if(isAddItemToCart) {
+          addItemToCart(product, this.props);
+          return;
+        } else {
+          this.props.history.push({
+            pathname: '/',
+          });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      })
+      console.log('byeeee')
   }
 
   render() {
     const { user } = this.state;
-    console.log({user});
+    const { login, logout, isAddItemToCart, product, addItemToCart } = this.props;
     return (
       <View style={{width: "100%", height: "100%"}}>
         <FBLogin style={{ marginBottom: 10, }}
@@ -29,19 +56,17 @@ export default class FBLoginContainer extends Component {
             this.setState({
               user: data
             })
-            AsyncStorage.setItem('isLoggedIn', JSON.stringify(true))
-            AsyncStorage.setItem('currentUser', JSON.stringify(data))
-            this.props.history.push({
-              pathname: '/',
-              state: {user: data, isLoggedIn: true}
-            });
+            this.loginHandle(data)
+            //AsyncStorage.setItem('isLoggedIn', JSON.stringify(true))
+            //AsyncStorage.setItem('currentUser', JSON.stringify(data))
+          
             //this.setState({ user : data.credentials });
           }}
           onLogout={() => {
             console.log("Logged out.");
             //this.setState({ user : null });
-            AsyncStorage.setItem('isLoggedIn', JSON.stringify(false))
-            this.onLoginHandle();
+            //AsyncStorage.setItem('isLoggedIn', JSON.stringify(false))
+            logout();
           }}
           onLoginFound={(data) => {
             console.log("Existing login found.");
@@ -68,3 +93,19 @@ export default class FBLoginContainer extends Component {
     )
   }
 }
+
+const mapStateToProps = state => ({
+  user: state.login.user,
+  isLoggedIn: state.login.isLoggedIn,
+  isAddItemToCart: state.products.isAddItemToCart,
+  products: state.products.products,
+  product: state.products.product,
+});
+
+const mapDispatchToProps = dispatch => ({
+  login: (user) => dispatch(login(user)),
+  logout: () => dispatch(logout()),
+  addItemToCart: (product, props) => dispatch(addItemToCart(product, props)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(FBLoginContainer)

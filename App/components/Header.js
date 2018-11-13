@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, AsyncStorage } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { connect } from 'react-redux';
 import { 
   Header, 
   Left,
@@ -18,33 +19,9 @@ class HeaderContainer extends Component {
     super(props);
     this.state =  {
       isDrawerToggle: false,
-      isLoggedIn: false,
-      currentUser: {}
     }
     this.openDrawer = this.openDrawer.bind(this);
     this.closeDrawer = this.closeDrawer.bind(this);
-  }
-
-  componentDidMount = async() => {
-    console.log("Header componentDidMount called.....")
-    this.setUser();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { passLogin } = nextProps;
-    if(passLogin) {
-      this.setUser();
-    }
-  }
-
-  setUser = async() => {
-    const isLoggedIn = JSON.parse(await AsyncStorage.getItem('isLoggedIn')) || false;
-    const currentUser = JSON.parse(await AsyncStorage.getItem('currentUser')) || {};
-    console.log({isLoggedIn});
-    this.setState({
-      isLoggedIn,
-      currentUser
-    });
   }
 
   closeDrawer = () => {
@@ -62,7 +39,13 @@ class HeaderContainer extends Component {
   }
 
   goToCart() {
-    this.props.history.push('/cart');
+    const { isLoggedIn } = this.props;
+    console.log('isLoggedIn in header', isLoggedIn)
+    if(isLoggedIn) {
+      this.props.history.push('/cart');
+    } else {
+      this.props.history.push('/login');
+    }
   }
 
   goToLogin() {
@@ -70,8 +53,8 @@ class HeaderContainer extends Component {
   }
 
   render() {
-    const { isProduct, badgeCount, isCart } = this.props;
-    const { isLoggedIn, currentUser } = this.state;
+    console.log("header render.......")
+    const { isProduct, products, isCart, isLoggedIn, user } = this.props;
     return (
         // {/* <Drawer
         //   ref={(ref) => this._drawer = ref}
@@ -116,7 +99,7 @@ class HeaderContainer extends Component {
                   style={!isCart ? {color: "#fff", paddingBottom: 18, paddingRight: 10} :
                   {color: "#222f3e", paddingRight: 10, paddingBottom: 5}}
                 >
-                  {currentUser.profile.first_name}
+                  {user.profile.first_name}
                 </Text>
               }
             </View>
@@ -144,23 +127,29 @@ class HeaderContainer extends Component {
                     }
                     BadgeElement={
                       <Text style={
+                        isLoggedIn ?
                         {
                           color:'#FFFFFF', 
                           textAlign: "center", 
-                          bottom: 1
+                          bottom: 1,
+                        } : {
+                          display: "none"
                         }
                       }
                       >
-                        {badgeCount ? badgeCount : 0}
+                        { isLoggedIn ? (products ? products.length : 0) : "" } 
                       </Text>
                     }
                     IconBadgeStyle={
+                      isLoggedIn ? 
                       {
                         width: 10,
                         height:20,
                         backgroundColor: 'red',
                         left: 15,
                         top: 5
+                      } : {
+                        height: 0
                       }
                     }
                   />
@@ -186,4 +175,10 @@ const drawerStyles = {
   }
 };
 
-export default HeaderContainer;
+const mapStateToProps = state => ({
+  user: state.login.user,
+  isLoggedIn: state.login.isLoggedIn,
+  products: state.products.products
+});
+
+export default connect(mapStateToProps, null)(HeaderContainer);

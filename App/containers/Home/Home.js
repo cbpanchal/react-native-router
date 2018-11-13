@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux';
 import { 
   View, 
   Text, 
@@ -19,6 +20,7 @@ import Carousel, { ParallaxImage } from 'react-native-snap-carousel';
 import productData from '../Data/productData';
 import newProductData from '../Data/newProducts';
 import sliderProducts from '../Data/sliderProducts';
+import { fetchProducts } from '../../redux/actions/productAction';
 
 let deviceWidth = Dimensions.get("window").width;
 let deviceHeight = Dimensions.get("window").height;
@@ -35,7 +37,6 @@ class Home extends Component {
       refreshing: false,
       animating: false,
       products: productData,
-      badgeCount: 0,
       data: sliderProducts,
       currentUser: user,
       isLoggedIn: isLoggedIn
@@ -43,10 +44,9 @@ class Home extends Component {
   }
 
   componentDidMount = async () => {
-    const products = JSON.parse(await AsyncStorage.getItem('products')) || [];
-    this.setState({
-      badgeCount: products.length
-    })
+    //const products = JSON.parse(await AsyncStorage.getItem('products')) || [];
+    const { fetchProducts } = this.props;
+    fetchProducts()
   }
 
   nextPage() {
@@ -134,9 +134,6 @@ class Home extends Component {
       <View style={styles.container}>
         <HeaderContainer 
           title="Home" {...this.props} 
-          badgeCount={badgeCount} 
-          currentUser={currentUser}
-          isLoggedIn={isLoggedIn}
         />
         <ActivityIndicator 
           size="large" 
@@ -241,4 +238,16 @@ const styles = StyleSheet.create({
     resizeMode: "stretch"
   }
 });
-export default Home;
+
+const mapStateToProps = state => ({
+  
+})
+
+const mapDispatchToProps = dispatch => {
+  return {
+    fetchProducts: () => {
+      dispatch(fetchProducts())
+    }
+  }
+}
+export default connect(null, mapDispatchToProps)(Home);
