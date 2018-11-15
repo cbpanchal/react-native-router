@@ -8,15 +8,16 @@ import {
   ScrollView, 
   AsyncStorage,
   ToastAndroid ,
-  Alert
+  Alert,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { setProducts, fetchProducts, addItemToCart } from '../../redux/actions/productAction';
 import { 
   Container, 
   Content,
   Text
 } from 'native-base';
+import ImageZoom from 'react-native-image-pan-zoom';
+import { setProducts, fetchProducts, addItemToCart } from '../../redux/actions/productAction';
 
 import HeaderContainer from '../../components/Header';
 import AddToBag from '../../containers/Bag/AddToBag';
@@ -117,7 +118,14 @@ class Product extends Component {
                 contentContainerStyle={{flex:1}}
               >
                 <View style={styles.imageContainer}>
-                  <Image style={styles.image} source={{uri: `${product.uri}`}} />
+                  <ImageZoom 
+                    cropWidth={Dimensions.get('window').width}
+                    cropHeight={Dimensions.get('window').height / 1.5}
+                    imageHeight={deviceHeight / 1.5}
+                    imageWidth={deviceWidth}
+                  >
+                    <Image style={styles.image} source={{uri: `${product.uri}`}} />
+                  </ImageZoom>
                 </View>
                 <View style={styles.productContainer}>
                   <Text name>{product.name}</Text>  

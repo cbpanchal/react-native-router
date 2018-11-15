@@ -41,7 +41,10 @@ class Login extends Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     console.log("nextProps in login", nextProps)
-    this.props = nextProps;
+    if(nextProps.location.state) {
+      nextProps.closeDrawer()
+    }
+    return nextProps;
   }
   
   _retrieveData = async () => {
@@ -91,8 +94,6 @@ class Login extends Component {
   }
 
   render() {
-    console.log('In login props',this.props);
-    
     const { isLoggedIn } = this.props;
     return (
       <View style={{height: '100%', width: '100%'}}>

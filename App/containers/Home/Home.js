@@ -49,6 +49,13 @@ class Home extends Component {
     fetchProducts()
   }
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if(nextProps.location.state) {
+      nextProps.closeDrawer()
+    }
+    return nextProps;
+  }
+
   nextPage() {
     this.props.history.push('/login');
   }
@@ -128,12 +135,12 @@ class Home extends Component {
   }
 
   render() {
-    console.log(this.state)
     const { products, refreshing, animating, badgeCount, currentUser, isLoggedIn } = this.state;
     return(
       <View style={styles.container}>
-        <HeaderContainer 
-          title="Home" {...this.props} 
+        <HeaderContainer
+          title="Home" 
+          {...this.props} 
         />
         <ActivityIndicator 
           size="large" 

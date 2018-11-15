@@ -16,6 +16,7 @@ class FBLoginContainer extends Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     console.log('nextProps', nextProps);
     this.props = nextProps
+    return this.props;
   }
 
   loginHandle(data) {

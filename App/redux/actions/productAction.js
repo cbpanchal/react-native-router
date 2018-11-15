@@ -5,7 +5,8 @@ import {
   SET_PRODUCTS,
   FETCH_PRODUCTS, 
   ADD_ITEM_TO_CART,
-  CLEAR_CART_ITEM 
+  CLEAR_CART_ITEM,
+  SET_TOTAL_AMOUNT 
 } from '../constants/actionConstant';
 
 export const setProducts = (products) => {
@@ -110,3 +111,9 @@ export const addItemToCart = (product, props) => dispatch => {
   })
 }
 
+export const setTotalAmount = (amount) => {
+  return {
+    type: SET_TOTAL_AMOUNT,
+    payload: amount
+  }
+};

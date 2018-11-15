@@ -57,6 +57,8 @@
 		01153BEC9A874BB292A254CF /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FA71C2D285040B4987B55F3 /* SystemConfiguration.framework */; };
 		DB7CECD0BC1048C798A18BAE /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F96016129C9D46D79B5E9206 /* AddressBook.framework */; };
 		87851109EEC44C33B3EF4EDD /* libRCTFBLogin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CD2CCA4096646428687ABA6 /* libRCTFBLogin.a */; };
+		12A9DF510612482CB7841824 /* libStripeNative.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D64CA5A91E64A2BB9CB245D /* libStripeNative.a */; };
+		0ADFF2E119374E19ACEB8216 /* libTPSStripe.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 168E91E95E824C18AE94525B /* libTPSStripe.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -384,6 +386,10 @@
 		F96016129C9D46D79B5E9206 /* AddressBook.framework */ = {isa = PBXFileReference; name = "AddressBook.framework"; path = "System/Library/Frameworks/AddressBook.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
 		6D3C2CEACCFE4B26BBAFBCFE /* RCTFBLogin.xcodeproj */ = {isa = PBXFileReference; name = "RCTFBLogin.xcodeproj"; path = "../node_modules/react-native-facebook-login/RCTFBLogin.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		6CD2CCA4096646428687ABA6 /* libRCTFBLogin.a */ = {isa = PBXFileReference; name = "libRCTFBLogin.a"; path = "libRCTFBLogin.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		3A1B0C2F87FC48C0B553ADAE /* StripeNative.xcodeproj */ = {isa = PBXFileReference; name = "StripeNative.xcodeproj"; path = "../node_modules/react-native-stripe/StripeNative.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		7D64CA5A91E64A2BB9CB245D /* libStripeNative.a */ = {isa = PBXFileReference; name = "libStripeNative.a"; path = "libStripeNative.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		332457A6A0A24296A06437B3 /* TPSStripe.xcodeproj */ = {isa = PBXFileReference; name = "TPSStripe.xcodeproj"; path = "../node_modules/tipsi-stripe/ios/TPSStripe.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		168E91E95E824C18AE94525B /* libTPSStripe.a */ = {isa = PBXFileReference; name = "libTPSStripe.a"; path = "libTPSStripe.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -417,6 +423,8 @@
 				01153BEC9A874BB292A254CF /* SystemConfiguration.framework in Frameworks */,
 				DB7CECD0BC1048C798A18BAE /* AddressBook.framework in Frameworks */,
 				87851109EEC44C33B3EF4EDD /* libRCTFBLogin.a in Frameworks */,
+				12A9DF510612482CB7841824 /* libStripeNative.a in Frameworks */,
+				0ADFF2E119374E19ACEB8216 /* libTPSStripe.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -609,6 +617,8 @@
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
 				BCA73E6BFC5F4D4B8EC35D23 /* RNGoogleSignin.xcodeproj */,
 				6D3C2CEACCFE4B26BBAFBCFE /* RCTFBLogin.xcodeproj */,
+				3A1B0C2F87FC48C0B553ADAE /* StripeNative.xcodeproj */,
+				332457A6A0A24296A06437B3 /* TPSStripe.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1278,6 +1288,8 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-google-signin/ios/RNGoogleSignin/**",
 					"$(SRCROOT)/../node_modules/react-native-facebook-login/RCTFBLogin/**",
+					"$(SRCROOT)/../node_modules/react-native-stripe/StripeNative/**",
+					"$(SRCROOT)/../node_modules/tipsi-stripe/ios/TPSStripe",
 				);
 			};
 			name = Debug;
@@ -1304,6 +1316,8 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-google-signin/ios/RNGoogleSignin/**",
 					"$(SRCROOT)/../node_modules/react-native-facebook-login/RCTFBLogin/**",
+					"$(SRCROOT)/../node_modules/react-native-stripe/StripeNative/**",
+					"$(SRCROOT)/../node_modules/tipsi-stripe/ios/TPSStripe",
 				);
 			};
 			name = Release;
@@ -1328,6 +1342,8 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-google-signin/ios/RNGoogleSignin/**",
 					"$(SRCROOT)/../node_modules/react-native-facebook-login/RCTFBLogin/**",
+					"$(SRCROOT)/../node_modules/react-native-stripe/StripeNative/**",
+					"$(SRCROOT)/../node_modules/tipsi-stripe/ios/TPSStripe",
 				);
 			};
 			name = Debug;
@@ -1351,6 +1367,8 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-google-signin/ios/RNGoogleSignin/**",
 					"$(SRCROOT)/../node_modules/react-native-facebook-login/RCTFBLogin/**",
+					"$(SRCROOT)/../node_modules/react-native-stripe/StripeNative/**",
+					"$(SRCROOT)/../node_modules/tipsi-stripe/ios/TPSStripe",
 				);
 			};
 			name = Release;
@@ -1385,6 +1403,8 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-google-signin/ios/RNGoogleSignin/**",
 					"$(SRCROOT)/../node_modules/react-native-facebook-login/RCTFBLogin/**",
+					"$(SRCROOT)/../node_modules/react-native-stripe/StripeNative/**",
+					"$(SRCROOT)/../node_modules/tipsi-stripe/ios/TPSStripe",
 				);
 			};
 			name = Debug;
@@ -1419,6 +1439,8 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-google-signin/ios/RNGoogleSignin/**",
 					"$(SRCROOT)/../node_modules/react-native-facebook-login/RCTFBLogin/**",
+					"$(SRCROOT)/../node_modules/react-native-stripe/StripeNative/**",
+					"$(SRCROOT)/../node_modules/tipsi-stripe/ios/TPSStripe",
 				);
 			};
 			name = Release;
@@ -1452,6 +1474,8 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-google-signin/ios/RNGoogleSignin/**",
 					"$(SRCROOT)/../node_modules/react-native-facebook-login/RCTFBLogin/**",
+					"$(SRCROOT)/../node_modules/react-native-stripe/StripeNative/**",
+					"$(SRCROOT)/../node_modules/tipsi-stripe/ios/TPSStripe",
 				);
 			};
 			name = Debug;
@@ -1485,6 +1509,8 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-google-signin/ios/RNGoogleSignin/**",
 					"$(SRCROOT)/../node_modules/react-native-facebook-login/RCTFBLogin/**",
+					"$(SRCROOT)/../node_modules/react-native-stripe/StripeNative/**",
+					"$(SRCROOT)/../node_modules/tipsi-stripe/ios/TPSStripe",
 				);
 			};
 			name = Release;

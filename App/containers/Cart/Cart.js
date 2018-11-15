@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import {
   View, 
   AsyncStorage, 
@@ -19,12 +20,14 @@ import {
   Left,
   Right,
   Text,
-  Icon
+  Icon,
+  Footer
 } from 'native-base';
 
 import HeaderContainer from '../../components/Header';
+import { setProducts, fetchProducts, setTotalAmount } from '../../redux/actions/productAction';
 
-export default class Cart extends Component {
+class Cart extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -37,7 +40,8 @@ export default class Cart extends Component {
 
   componentDidMount = async () => {
     console.log("componentDidMount called>>>>>>>>")
-    const products = JSON.parse(await AsyncStorage.getItem('products')) || [];
+    //const products = JSON.parse(await AsyncStorage.getItem('products')) || [];
+    const { products, setTotalAmount } = this.props;
     console.log("Products in cart...", products);
     this.setState({
       products,
@@ -45,6 +49,7 @@ export default class Cart extends Component {
       items: products.length,
       total: this.totolAmount(products)
     })
+    setTotalAmount(this.totolAmount(products));
   }
   
   totolAmount = (products) => (
@@ -66,6 +71,7 @@ export default class Cart extends Component {
 
   handleRemoveItem = async (item) => {
     const { products } = this.state;
+    const { setTotalAmount } = this.props;
     const itemIndex = products.indexOf(item);
     products.splice(itemIndex, 1);
     console.log("removed after products", products);
@@ -78,6 +84,7 @@ export default class Cart extends Component {
             items: products.length,
             total: this.totolAmount(products)
           })
+          setTotalAmount(this.state.total)
           ToastAndroid.show(`Removed ${item.name} from Cart`, ToastAndroid.SHORT)
         })
         .catch(err => {
@@ -93,6 +100,7 @@ export default class Cart extends Component {
 
   toggleItems = async (item, operation) => {
     const { products } = this.state;
+    const { setTotalAmount } = this.props;
     const productIdx = products.map(value => value.name).indexOf(item.name);
     if(operation === "minus") {
       if(products[productIdx].quantity === 1) {
@@ -110,6 +118,7 @@ export default class Cart extends Component {
         products,
         total: this.totolAmount(products)
       })
+      setTotalAmount(this.state.total)
     })
     .catch(error => {
       console.log(error);
@@ -227,10 +236,30 @@ export default class Cart extends Component {
             </ScrollView>
           </Content>
         </Container>
+        <Footer style={styles.footer}>
+          <TouchableOpacity 
+            onPress={() => this.props.history.push('/checkout')}
+          >
+            <Text style={{color: "#fff"}}>CHECK OUT</Text>
+          </TouchableOpacity>
+        </Footer>
       </View>
     )
   }
 }
+
+const mapStateToProps = state => ({
+  user: state.login.user,
+  isLoggedIn: state.login.isLoggedIn,
+  products: state.products.products,
+});
+
+const mapDispatchToProps = dispatch => ({
+  setProducts: (products) => dispatch(setProducts(products)),
+  setTotalAmount: (amount) => dispatch(setTotalAmount(amount)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Cart);
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -281,5 +310,10 @@ const styles = StyleSheet.create({
     flexDirection: "row", 
     justifyContent: "flex-start", 
     alignContent: "space-around"
-  }
+  },
+  footer: {
+    backgroundColor: "#222f3e", 
+    justifyContent:"center", 
+    alignItems:"center"
+  },
 });

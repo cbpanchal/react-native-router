@@ -2,13 +2,15 @@ import {
   SET_PRODUCTS, 
   FETCH_PRODUCTS, 
   ADD_ITEM_TO_CART,
-  CLEAR_CART_ITEM 
+  CLEAR_CART_ITEM,
+  SET_TOTAL_AMOUNT 
 }  from '../constants/actionConstant'; 
 
 const initialState = {
   products: [],
   isAddItemToCart: false,
-  product: {}
+  product: {},
+  totalAmount: 0
 };
 
 const productReducer = (state = initialState, action) => {
@@ -35,6 +37,11 @@ const productReducer = (state = initialState, action) => {
         ...state,
         isAddItemToCart: false,
         product: {}
+      }
+    case SET_TOTAL_AMOUNT:
+      return {
+        ...state,
+        totalAmount: action.payload
       }
     default:
       return state;
