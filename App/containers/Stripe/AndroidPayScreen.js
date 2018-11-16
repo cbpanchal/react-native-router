@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
 import stripe from 'tipsi-stripe';
+import { Button } from 'native-base';
 
 export default class AndroidPayScreen extends Component {
   constructor(props) {
@@ -68,13 +69,14 @@ export default class AndroidPayScreen extends Component {
   render() {
     const { loading, allowed, token } = this.state
     return (
-      <View>
-        <TouchableOpacity
+      <View style={{justifyContent: "center", alignItems: "center"}}>
+        <Button
           onPress={this.handleAndroidPayPress}
-          style={{width: "100%", paddingTop: 20}}
+          style={styles.paymentButton}
+          rounded
         >
-          <Text>Pay with Android Pay</Text>
-        </TouchableOpacity>
+          <Text style={{fontSize: 20, color: "#fff"}}>Stripe Pay</Text>
+        </Button>
         <View
           style={styles.token}
         >
@@ -109,11 +111,10 @@ const styles = StyleSheet.create({
     height: 20,
   },
   paymentButton: {
-    backgroundColor: "#222f3e",
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    borderBottomRightRadius: 20,
-    borderBottomLeftRadius: 20,
-    width: 120
+    width: "100%", 
+    marginTop: 20, 
+    maxWidth: 180, 
+    backgroundColor: "#222f3e", 
+    padding: 20
   },
 })

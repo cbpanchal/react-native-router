@@ -3,6 +3,7 @@ package com.test;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.gettipsi.stripe.StripeReactPackage;
 import com.razorpay.rn.RazorpayPackage;
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
@@ -28,6 +29,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+          new SplashScreenReactPackage(),
           new StripeReactPackage(),
           new FacebookLoginPackage(),
           new RNGoogleSigninPackage(),

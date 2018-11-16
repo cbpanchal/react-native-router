@@ -148,6 +148,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-splash-screen')
     implementation project(':tipsi-stripe')
     implementation project(':react-native-google-signin')
     implementation project(':react-native-facebook-login')

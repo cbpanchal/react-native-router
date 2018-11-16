@@ -7,7 +7,7 @@ import {
   Right, 
   Body, 
   Title, 
-  Icon 
+  Icon, 
 } from "native-base";
 import IconBadge from 'react-native-icon-badge';
 
@@ -34,11 +34,11 @@ class HeaderContainer extends Component {
   goToCart() {
     const { isLoggedIn } = this.props;
     console.log('isLoggedIn in header', isLoggedIn)
-    // if(isLoggedIn) {
+    if(isLoggedIn) {
       this.props.history.push('/cart');
-    // } else {
-    //   this.props.history.push('/login');
-    // }
+    } else {
+      this.props.history.push('/login');
+    }
   }
 
   goToLogin() {
@@ -50,11 +50,11 @@ class HeaderContainer extends Component {
     const { isProduct, products, isCart, isLoggedIn, user } = this.props;
     return (
       <Header
-        transparent
-        androidStatusBarColor="#4f6d7a"
+        transparent={true}
+        noShadow
         style={
-          !isProduct ? { backgroundColor: "#222f3e" } : 
-          { backgroundColor: "transparent", elevation:0}}
+          isProduct ? {  backgroundColor:'transparent' , zIndex: 9999} : 
+          { backgroundColor: "#222f3e", }}
         >
         <StatusBar
           backgroundColor="#364b63"
@@ -83,8 +83,9 @@ class HeaderContainer extends Component {
           <View >
             {isLoggedIn && 
               <Text 
-                style={!isCart ? {color: "#fff", paddingBottom: 18, paddingRight: 10} :
-                {color: "#222f3e", paddingRight: 10, paddingBottom: 5}}
+                style={isCart ? styles.cartPage : isProduct ? styles.productPage :
+                  {color: "#fff", paddingBottom: 18, paddingRight: 10}
+               }
               >
                 {user.profile.first_name}
               </Text>
@@ -96,7 +97,7 @@ class HeaderContainer extends Component {
           >
             <Icon type="MaterialCommunityIcons" 
               name='login' 
-              style={!isCart ? {color: "#fff"} : {color: "#222f3e"}}  
+              style={isCart ? {color: "#222f3e"} : isProduct ? {color: "#222f3e"} : {color: "#fff"}}  
               onPress={() => this.goToLogin()} 
             /> 
           </TouchableOpacity>
@@ -151,16 +152,18 @@ class HeaderContainer extends Component {
 const styles =  StyleSheet.create({
   title: {
     fontSize: 20
+  },
+  cartPage : {
+    color: "#222f3e", 
+    paddingRight: 10, 
+    paddingBottom: 5
+  },
+  productPage: {
+    color: "#222f3e", 
+    paddingRight: 10, 
+    paddingBottom: 17
   }
 });
-
-const drawerStyles = {
-  drawer: { 
-    shadowColor: '#000000', 
-    shadowOpacity: 0.8, 
-    shadowRadius: 3
-  }
-};
 
 const mapStateToProps = state => ({
   user: state.login.user,

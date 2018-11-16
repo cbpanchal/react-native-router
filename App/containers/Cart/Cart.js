@@ -236,13 +236,15 @@ class Cart extends Component {
             </ScrollView>
           </Content>
         </Container>
-        <Footer style={styles.footer}>
+        <View style={{position: "absolute", bottom: 0, width: "100%"}}>
           <TouchableOpacity 
             onPress={() => this.props.history.push('/checkout')}
+            style={styles.checkoutButton}
+            activeOpacity={0.5}
           >
-            <Text style={{color: "#fff"}}>CHECK OUT</Text>
+            <Text style={{color: "#fff", textAlign: "center"}}>CHECK OUT</Text>
           </TouchableOpacity>
-        </Footer>
+        </View>
       </View>
     )
   }
@@ -311,9 +313,9 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start", 
     alignContent: "space-around"
   },
-  footer: {
-    backgroundColor: "#222f3e", 
-    justifyContent:"center", 
-    alignItems:"center"
-  },
+  checkoutButton: {
+    backgroundColor: "#222f3e",
+    width: "100%",
+    padding: 10
+  }
 });

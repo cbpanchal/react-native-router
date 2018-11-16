@@ -20,7 +20,7 @@ export default class AddToBag extends Component {
         onPress= {this.handleItem.bind(this)}
         style={styles.addToBad}
       >
-        <Text style={{color: "#fff", textAlign: "center"}}>Add to bag</Text>
+        <Text style={{color: "#fff", textAlign: "center", fontSize: 15}}>ADD TO BAG</Text>
       </TouchableOpacity>
     )
   }

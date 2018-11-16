@@ -77,14 +77,12 @@ export default class SideBar extends Component {
           </Right>
         </ListItem> */}
         <Link component={TouchableOpacity} 
-         to={{
-          pathname: item.page === 'Home' ? '/' : item.page,
-          search: "?utm=your+face",
-          state: { isRoute: true }
-        }}> 
-          <View 
-            style={styles.sideBarContent}
-          >
+          to={{
+            pathname: item.page === 'Home' ? '/' : item.page,
+            state: { isRoute: true }
+          }}
+        > 
+          <View style={styles.sideBarContent}>
             <Left style={{flexDirection: "row", flex: 1}}>
               <Text>
                 <Icon type={item.icon.type} name={item.icon.name} style={{color: "#222f3e"}}/>

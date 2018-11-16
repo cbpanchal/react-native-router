@@ -11,7 +11,8 @@ import stripe from 'tipsi-stripe'
 import AndroidPayScreen from '../../containers/Stripe/AndroidPayScreen';
 
 import { 
-  Container, 
+  Container,
+  Button,
 } from 'native-base';
 
 import HeaderContainer from '../../components/Header';
@@ -36,36 +37,39 @@ class Checkout extends Component {
             <Text style={styles.totalAmountContainer}>
               Total Payable Amount : <Text style={{fontWeight: "bold"}}>${totalAmount}</Text>
             </Text>
-            <TouchableOpacity onPress={() => {
-              let options = {
-                description: 'Credits towards consultation',
-                image: 'https://i.imgur.com/3g7nmJC.png',
-                currency: 'INR',
-                key: 'rzp_test_5P98JVK1X98EC8',
-                amount: `${totalAmount}`,
-                name: 'Test mode',
-                prefill: {
-                  email: 'void@razorpay.com',
-                  contact: '9191919191',
-                  name: 'Razorpay Software'
-                },
-                theme: {color: '#F37254'}
-              }
-              RazorpayCheckout.open(options).then((data) => {
-                // handle success
-                console.log("data", data);
-                alert(`Success: ${data.razorpay_payment_id}`);
-                this.props.history.push('/');
-              }).catch((error) => {
-                // handle failure
-                alert(`Error: ${error.code} | ${error.description}`);
-              });
-            }}
-            style={styles.paymentButton}
-            activeOpacity= {0.2}
-            >
-              <Text style={{color: "#fff", fontSize: 20, textAlign: "center"}}> Razor Pay </Text>
-            </TouchableOpacity>
+            <View style={{ justifyContent: "center", alignItems: "center"}}>
+              <Button onPress={() => {
+                let options = {
+                  description: 'Credits towards consultation',
+                  image: 'https://i.imgur.com/3g7nmJC.png',
+                  currency: 'INR',
+                  key: 'rzp_test_5P98JVK1X98EC8',
+                  amount: `${totalAmount}`,
+                  name: 'Test mode',
+                  prefill: {
+                    email: 'void@razorpay.com',
+                    contact: '9191919191',
+                    name: 'Razorpay Software'
+                  },
+                  theme: {color: '#F37254'}
+                }
+                RazorpayCheckout.open(options).then((data) => {
+                  // handle success
+                  console.log("data", data);
+                  alert(`Success: ${data.razorpay_payment_id}`);
+                  this.props.history.push('/');
+                }).catch((error) => {
+                  // handle failure
+                  alert(`Error: ${error.code} | ${error.description}`);
+                });
+              }}
+              rounded
+              info
+              style={styles.paymentButton}
+              >
+                <Text style={{color: "#222f3e", fontSize: 20, textAlign: "center", padding: 15}}> Razor Pay </Text>
+              </Button>
+            </View>
             <AndroidPayScreen totalAmount={totalAmount}/>
           </View>
         </Container>
@@ -89,15 +93,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    textAlign: "center",
   },
   paymentButton: {
-    backgroundColor: "#222f3e",
-    padding: 10,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    borderBottomRightRadius: 20,
-    borderBottomLeftRadius: 20,
-    width: 120
+    width: "100%",
+    maxWidth: 130,
   },
   totalAmountContainer: {
     fontSize: 20, 

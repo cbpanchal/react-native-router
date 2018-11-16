@@ -11,7 +11,6 @@ import {
   FlatList,
   Dimensions,
   ActivityIndicator,
-  AsyncStorage
 } from "react-native";
 import HeaderContainer from '../../components/Header';
 import { Footer } from 'native-base';

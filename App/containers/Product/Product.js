@@ -9,12 +9,22 @@ import {
   AsyncStorage,
   ToastAndroid ,
   Alert,
+  ImageBackground,
+  TouchableOpacity
 } from 'react-native';
 import { connect } from 'react-redux';
 import { 
   Container, 
   Content,
-  Text
+  Text,
+  Header,
+  Icon,
+  Title,
+  Body,
+  Left,
+  Right,
+  Button,
+  Toast,
 } from 'native-base';
 import ImageZoom from 'react-native-image-pan-zoom';
 import { setProducts, fetchProducts, addItemToCart } from '../../redux/actions/productAction';
@@ -78,7 +88,11 @@ class Product extends Component {
       console.log("productIdx........", productIdx);
       products[productIdx].quantity++;
       console.log("product........", products);
-      ToastAndroid.show(`Added ${products[productIdx].quantity} ${product.name} to the Cart!`, ToastAndroid.SHORT);
+      //ToastAndroid.show(`Added ${products[productIdx].quantity} ${product.name} to the Cart!`, ToastAndroid.SHORT);
+      Toast.show({
+        text: `Added ${products[productIdx].quantity} ${product.name} to the Cart!`,
+        buttonText: 'Okay'
+      });
       setProducts(products);
       await AsyncStorage.setItem('products', JSON.stringify(products))
       .then(res => {
@@ -89,7 +103,11 @@ class Product extends Component {
       })
       return false;
     } else {
-        ToastAndroid.show(`Added ${product.name} to the Cart!`, ToastAndroid.SHORT);
+        //ToastAndroid.show(`Added ${product.name} to the Cart!`, ToastAndroid.SHORT);
+        Toast.show({
+          text: `Added ${product.name} to the Cart!`,
+          buttonText: 'Okay'
+        });
     }
     products.push(product);
     setProducts(products);
@@ -147,10 +165,22 @@ class Product extends Component {
           </View>
         </Container>
       </View>
+      // <Container>
+      //   <ImageBackground
+      //     source={{uri: `${product.uri}`}}
+      //     style={{
+      //       width: null,
+      //       height: deviceHeight/ 1.5,}}
+      //   >
+      //   <HeaderContainer title="Product" isProduct {...this.props} />
+      //     <Content>
+      //       <Text style={{ color: "black", padding: 20 }}>Hi there!</Text>
+      //     </Content>
+      //   </ImageBackground>
+      // </Container>
     )
   }
 }
-
 const styles =  StyleSheet.create({
   mainContainer: {
     flexDirection: "column", 
@@ -159,20 +189,21 @@ const styles =  StyleSheet.create({
   },
   imageContainer: {
     flex: 1,
-    alignItems: 'stretch'
+    alignItems: 'stretch',
   },
   image: {
     flex: 1,
     width: "100%",
     height: deviceHeight / 1.5,
+    resizeMode: "cover",
   },
   productContainer: {
     flex: 1,
     padding: 10,
     justifyContent: "flex-start",
     alignItems: "stretch",
-    paddingBottom: 45
-  }
+    paddingBottom: 45,
+  },
 });
 
 const mapStateToProps = state => ({
